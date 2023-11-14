@@ -88,4 +88,50 @@ echo "Niveau de difficulté : $selectedDifficulty<br>";
 echo "Personnage sélectionné aléatoirement : {$selectedPlayer->name}<br>";
 echo "Nombre de niveaux : $numberOfRounds<br><br>";
 
+// Boucle principale du jeu
+foreach ($opponents as $opponent) {
+    $remainingMarbles = $selectedPlayer->marbles;
+
+    // Affiche le nombre de billes restantes du joueur sélectionné
+    echo "Billes restantes de {$selectedPlayer->name} : $remainingMarbles<br>";
+
+    // Affiche les caractéristiques de l'adversaire
+    echo "Affrontement avec {$opponent->name} qui a {$opponent->marbles} billes dans ses mains.<br>";
+
+    // Vérifie si le joueur peut tricher
+    if ($opponent->isCheatable() && rand(0, 1)) {
+        // Le joueur décide de tricher
+        $selectedPlayer->marbles += $opponent->marbles;
+        echo "{$selectedPlayer->name} a triché et a remporté {$opponent->marbles} billes contre {$opponent->name}!<br><br>";
+    } else {
+        // Affrontement normal
+        $isPlayerAlive = $selectedPlayer->playRound($opponent->marbles);
+
+        if (!$isPlayerAlive) {
+            echo "{$selectedPlayer->name} a perdu toutes ses billes et le jeu est terminé!<br><br>";
+            break;
+        }
+
+        // Vérifie si le joueur a deviné correctement la parité des billes de l'adversaire
+        $guessedEven = $selectedPlayer->makeGuess();
+        $opponentIsEven = $opponent->marbles % 2 == 0;
+
+        if ($guessedEven == $opponentIsEven) {
+            // Le joueur a deviné correctement
+            $selectedPlayer->marbles += $opponent->marbles + $selectedPlayer->gain;
+            echo "{$selectedPlayer->name} a remporté {$opponent->marbles} billes contre {$opponent->name}!<br><br>";
+        } else {
+            // Le joueur n'a pas deviné correctement
+            $selectedPlayer->marbles -= $opponent->marbles - $selectedPlayer->loss;
+            echo "{$selectedPlayer->name} a perdu {$opponent->marbles} billes contre {$opponent->name}!<br><br>";
+        }
+    }
+
+    // Vérifie si le joueur est toujours en vie après la partie
+    if ($selectedPlayer->marbles <= 0) {
+        echo "{$selectedPlayer->name} a perdu toutes ses billes et le jeu est terminé!<br><br>";
+        break;
+    }
+}
+
 ?>
