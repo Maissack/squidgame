@@ -134,4 +134,8 @@ foreach ($opponents as $opponent) {
     }
 }
 
+// Affiche le résultat final
+if ($selectedPlayer->marbles > 0) {
+    echo "{$selectedPlayer->name} a gagné le jeu avec {$selectedPlayer->marbles} billes et remporte 45,6 milliards de Won sud-coréen!<br>";
+}
 ?>
