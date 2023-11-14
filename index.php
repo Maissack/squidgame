@@ -61,4 +61,31 @@ class Opponent {
     }
 }
 
+// Tableau des niveaux de difficulté
+$difficulties = ["Facile" => 5, "Difficile" => 10, "Impossible" => 20];
+
+// Choix aléatoire d'un niveau de difficulté
+$selectedDifficulty = array_rand($difficulties);
+$numberOfRounds = $difficulties[$selectedDifficulty];
+
+// Choix aléatoire d'un personnage
+$characters = [
+    new Player("Seong Gi-hun", 15, 2, 1, "Squid Game!", "Difficile"),
+    new Player("Kang Sae-byeok", 25, 1, 2, "Red light, green light!", "Moyen"),
+    new Player("Cho Sang-woo", 35, 0, 3, "I'm the mastermind.", "Facile"),
+];
+
+$selectedPlayer = $characters[array_rand($characters)];
+
+// Tableau des adversaires
+$opponents = [];
+for ($i = 1; $i <= 20; $i++) {
+    $opponents[] = new Opponent("Adversaire $i", rand(1, 20), rand(18, 80));
+}
+
+// Affiche le niveau de difficulté, le joueur sélectionné, et le nombre de parties
+echo "Niveau de difficulté : $selectedDifficulty<br>";
+echo "Personnage sélectionné aléatoirement : {$selectedPlayer->name}<br>";
+echo "Nombre de niveaux : $numberOfRounds<br><br>";
+
 ?>
